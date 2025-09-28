@@ -14,6 +14,8 @@ import uniandes.edu.co.proyecto.modelo.UsuarioServicio;
 @Repository
 public interface UsuarioServicioRepository extends JpaRepository<UsuarioServicio, Long> {
 
+    boolean existsByNumTarjeta(String numTarjeta);
+    
     // ✅ Dar todos los usuarios de servicio
     @Query(value = "SELECT * FROM USUARIO_SERVICIO", nativeQuery = true)
     Collection<UsuarioServicio> darUsuariosServicio();

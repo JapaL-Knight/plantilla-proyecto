@@ -1,6 +1,7 @@
 package uniandes.edu.co.proyecto.repositorio;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,9 @@ import uniandes.edu.co.proyecto.modelo.Punto;
 
 @Repository
 public interface PuntoRepository extends JpaRepository<Punto, Long> {
+    
+    @Query("SELECT p FROM Punto p WHERE p.servicio.idServicio = :idServicio ORDER BY p.orden ASC")
+    List<Punto> puntosDeServicio(Long idServicio);
 
     // ✅ Dar todos los puntos
     @Query(value = "SELECT * FROM PUNTO", nativeQuery = true)
