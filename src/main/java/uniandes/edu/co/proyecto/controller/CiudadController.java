@@ -17,7 +17,7 @@ public class CiudadController {
     @PostMapping
     public String crearCiudad(@RequestBody Ciudad ciudad) {
         if (ciudad.getNombre() == null || ciudad.getNombre().isBlank()) {
-            return "Error: el nombre de la ciudad no puede ser vacío";
+            return "❌ Error: el nombre de la ciudad no puede ser vacío";
         }
         ciudadRepository.insertarCiudad(ciudad.getNombre());
         return "Ciudad registrada exitosamente";

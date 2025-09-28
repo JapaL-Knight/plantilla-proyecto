@@ -1,56 +1,87 @@
 package uniandes.edu.co.proyecto.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 
-import uniandes.edu.co.proyecto.modelo.UsuarioConductor;
-import uniandes.edu.co.proyecto.repositorio.UsuarioConductorRepository;
+import uniandes.edu.co.proyecto.modelo.UsuarioServicio;
+import uniandes.edu.co.proyecto.repositorio.UsuarioServicioRepository;
+
+import java.util.Collection;
 
 @RestController
-@RequestMapping("/usuarios-conductor")
+@RequestMapping("/usuarios_servicio")
 public class UsuarioConductorController {
 
     @Autowired
-    private UsuarioConductorRepository repo;
+    private UsuarioServicioRepository usuarioServicioRepository;
 
+    // ✅ Obtener todos los usuarios de servicio
     @GetMapping
-    public List<UsuarioConductor> listar() {
-        return repo.findAll();
+    public Collection<UsuarioServicio> darUsuariosServicio() {
+        return usuarioServicioRepository.darUsuariosServicio();
     }
 
+    // ✅ Buscar un usuario de servicio por cédula
+    @GetMapping("/{cedula}")
+    public ResponseEntity<?> darUsuarioServicio(@PathVariable("cedula") String cedula) {
+        UsuarioServicio usuario = usuarioServicioRepository.darUsuarioServicio(cedula);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Usuario de servicio no encontrado");
+        }
+        return ResponseEntity.ok(usuario);
+    }
+
+    // ✅ Crear un nuevo usuario de servicio (RF2 exitoso)
     @PostMapping
-    public UsuarioConductor crear(@RequestBody UsuarioConductor u) {
-        return repo.save(u);
+    public ResponseEntity<?> crearUsuarioServicio(@RequestBody UsuarioServicio usuario) {
+        try {
+            usuarioServicioRepository.insertarUsuarioServicio(
+                usuario.getCedula(),
+                usuario.getNombre(),
+                usuario.getCorreo(),
+                usuario.getCelular(),
+                usuario.getCalificacion(),
+                usuario.getNumTarjeta(),
+                usuario.getNombreTarjeta(),
+                usuario.getVencimiento(),
+                usuario.getCodigoSeguridad()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body("✅ Usuario de servicio creado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("❌ Error al crear Usuario de servicio: " + e.getMessage());
+        }
     }
 
-    @GetMapping("/{id}")
-    public UsuarioConductor obtener(@PathVariable Long id) {
-        return repo.findById(id).orElse(null);
+    // ✅ Actualizar la tarjeta de un usuario de servicio
+    @PutMapping("/{cedula}/tarjeta")
+    public ResponseEntity<?> actualizarTarjeta(@PathVariable("cedula") String cedula,
+                                               @RequestBody UsuarioServicio usuario) {
+        try {
+            usuarioServicioRepository.actualizarTarjeta(
+                cedula,
+                usuario.getNumTarjeta(),
+                usuario.getNombreTarjeta(),
+                usuario.getVencimiento(),
+                usuario.getCodigoSeguridad()
+            );
+            return ResponseEntity.ok("✅ Tarjeta actualizada correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("❌ Error al actualizar tarjeta: " + e.getMessage());
+        }
     }
 
-    @PutMapping("/{id}")
-    public UsuarioConductor actualizar(@PathVariable Long id, @RequestBody UsuarioConductor u) {
-        u.setIdUsuario(id);
-        return repo.save(u);
+    // ✅ Eliminar un usuario de servicio por cédula
+    @DeleteMapping("/{cedula}")
+    public ResponseEntity<?> eliminarUsuarioServicio(@PathVariable("cedula") Long cedula) {
+        try {
+            usuarioServicioRepository.eliminarUsuarioServicio(cedula);
+            return ResponseEntity.ok("✅ Usuario de servicio eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("❌ Error al eliminar Usuario de servicio: " + e.getMessage());
+        }
     }
-
-    @DeleteMapping("/{id}")
-    public void borrar(@PathVariable Long id) {
-        repo.deleteById(id);
-    }
-    @GetMapping("/top20")
-    public ResponseEntity<?> top20Conductores() {
-        return ResponseEntity.ok(repo.top20Conductores());
-    }
-    
 }
