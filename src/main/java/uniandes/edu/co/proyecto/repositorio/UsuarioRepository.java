@@ -36,4 +36,18 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                            @Param("correo") String correo, 
                            @Param("celular") String celular,
                            @Param("calificacion") int calificacion);
+
+       // RFC 1
+    @Query(value = "SELECT s.IDSERVICIO, " +
+                   "       v.PLACA, v.MARCA, v.MODELO, v.COLOR, v.CAPACIDADPASAJEROS, v.TIPOVEHICULO, v.NIVEL, " +
+                   "       uc.IDUSUARIOCONDUCTOR, u.NOMBRE AS NOMBRECONDUCTOR, u.CEDULA AS CEDULACONDUCTOR, " +
+                   "       u.CORREO AS CORREOCONDUCTOR, u.CELULAR AS CELULARCONDUCTOR " +
+                   "FROM SERVICIO s " +
+                   "INNER JOIN USUARIO_SERVICIO us ON s.IDUSUARIOSERVICIO = us.IDUSUARIOSERVICIO " +
+                   "INNER JOIN USUARIO_CONDUCTOR uc ON s.IDUSUARIOCONDUCTOR = uc.IDUSUARIOCONDUCTOR " +
+                   "INNER JOIN USUARIO u ON uc.IDUSUARIO = u.IDUSUARIO " +
+                   "INNER JOIN VEHICULO v ON s.IDVEHICULO = v.IDVEHICULO " +
+                   "WHERE us.IDUSUARIO = :idUsuario",
+           nativeQuery = true)
+    Collection<Object[]> consultarServiciosPorUsuario(@Param("idUsuario") Long idUsuario);
 }

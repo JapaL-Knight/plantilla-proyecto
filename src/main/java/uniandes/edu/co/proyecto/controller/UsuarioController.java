@@ -3,6 +3,7 @@ package uniandes.edu.co.proyecto.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,4 +48,10 @@ public class UsuarioController {
     public void borrarUsuario(@PathVariable Long id) {
         usuarioRepo.deleteById(id);
     }
+
+        @GetMapping("/consultarPorUsuario/{idUsuario}")
+    public ResponseEntity<?> consultarServiciosPorUsuario(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(usuarioRepo.consultarServiciosPorUsuario(idUsuario));
+    }
+
 }
