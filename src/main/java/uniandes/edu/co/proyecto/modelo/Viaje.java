@@ -37,4 +37,19 @@ public class Viaje {
     }
 
     // getters y setters
+    public Servicio getServicio() {
+        return servicio;
+    }
+
+    public String getHoraInicio() {
+        return horaInicio;
+    }
+
+    public String getHoraFin() {
+        return horaFin;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
 }

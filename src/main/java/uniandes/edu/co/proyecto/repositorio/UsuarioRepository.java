@@ -27,13 +27,26 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     //  Consultar usuario por id
     @Query(value = "SELECT * FROM USUARIO WHERE idusuario = :id", nativeQuery = true)
-    Usuario darUsuario(@Param("id") long id);
+    Usuario darUsuario(@Param("id") String cedula);
 
     //  Eliminar usuario por id
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM USUARIO WHERE idusuario = :id", nativeQuery = true)
-    void eliminarUsuario(@Param("id") long id);
+    void eliminarUsuario(@Param(value = "id")
+            String cedula);
+    
+    //  Insertar usuario
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO USUARIO (CEDULA, NOMBRE, CORREO, CELULAR, CALIFICACION) " +
+                   "VALUES (:cedula, :nombre, :correo, :celular, :calificacion)",
+           nativeQuery = true)
+    void insertarUsuario(@Param("cedula") String cedula,
+                         @Param("nombre") String nombre,
+                         @Param("correo") String correo,
+                         @Param("celular") String celular,
+                         @Param("calificacion") int calificacion);
 
     //  Actualizar usuario
     @Modifying
@@ -58,4 +71,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                    "WHERE us.IDUSUARIO = :idUsuario",
            nativeQuery = true)
     Collection<Object[]> consultarServiciosPorUsuario(@Param("idUsuario") Long idUsuario);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE USUARIO SET CORREO = :correo WHERE CEDULA = :cedula", nativeQuery = true)
+    void actualizarCorreo(@Param("cedula") String cedula, @Param("correo") String correo);
+
 }

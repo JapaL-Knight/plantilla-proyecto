@@ -1,42 +1,81 @@
 package uniandes.edu.co.proyecto.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
 import uniandes.edu.co.proyecto.modelo.Servicio;
 import uniandes.edu.co.proyecto.repositorio.ServicioRepository;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/servicios")
 public class ServicioController {
 
     @Autowired
-    private ServicioRepository repo;
+    private ServicioRepository servicioRepository;
 
     @GetMapping
-    public List<Servicio> listar() {
-        return repo.findAll();
-    }
-
-    @PostMapping
-    public Servicio crear(@RequestBody Servicio s) {
-        return repo.save(s);
+    public Collection<Servicio> darServicios() {
+        return servicioRepository.darServicios();
     }
 
     @GetMapping("/{id}")
-    public Servicio obtener(@PathVariable Long id) {
-        return repo.findById(id).orElse(null);
+    public ResponseEntity<?> darServicio(@PathVariable("id") Long id) {
+        Servicio servicio = servicioRepository.darServicio(id);
+        if (servicio == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Servicio no encontrado");
+        }
+        return ResponseEntity.ok(servicio);
     }
 
-    @PutMapping("/{id}")
-    public Servicio actualizar(@PathVariable Long id, @RequestBody Servicio s) {
-        s.setIdServicio(id);
-        return repo.save(s);
+    @PostMapping
+    public ResponseEntity<?> crearServicio(@RequestBody Servicio servicio) {
+        try {
+            servicioRepository.insertarServicio(
+                    servicio.getTipoServicio(),
+                    servicio.getFecha().toString(),
+                    servicio.getCosto(),
+                    servicio.getUsuarioServicio().getIdUsuario(),
+                    servicio.getUsuarioConductor().getIdUsuario(),
+                    servicio.getVehiculo().getIdVehiculo()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body("✅ Servicio creado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al crear Servicio: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/costo")
+    public ResponseEntity<?> actualizarCosto(@PathVariable("id") Long id, @RequestParam double costo) {
+        try {
+            servicioRepository.actualizarCosto(id, costo);
+            return ResponseEntity.ok("✅ Costo actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al actualizar costo: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void borrar(@PathVariable Long id) {
-        repo.deleteById(id);
+    public ResponseEntity<?> eliminarServicio(@PathVariable("id") Long id) {
+        try {
+            servicioRepository.eliminarServicio(id);
+            return ResponseEntity.ok("✅ Servicio eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al eliminar Servicio: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/ganancias/{idConductor}")
+    public Collection<Object[]> gananciasPorConductor(@PathVariable("idConductor") Long idConductor) {
+        return servicioRepository.gananciasPorVehiculoYServicio(idConductor);
+    }
+
+    @GetMapping("/utilizacion")
+    public Collection<Object[]> utilizacionPorCiudad(@RequestParam String ciudad,
+                                                     @RequestParam String inicio,
+                                                     @RequestParam String fin) {
+        return servicioRepository.utilizacionPorCiudad(ciudad, java.sql.Date.valueOf(inicio), java.sql.Date.valueOf(fin));
     }
 }

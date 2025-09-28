@@ -38,9 +38,35 @@ public class Vehiculo {
     private UsuarioConductor usuarioConductor;
 
     public void setIdVehiculo(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdVehiculo'");
+        this.idVehiculo = id;
     }
 
     // getters y setters
+    public String getPlaca() {
+        return placa;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public int getCapacidadPasajeros() {
+        return capacidadPasajeros;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public UsuarioConductor getUsuarioConductor() {
+        return usuarioConductor;
+    }
+
+    public Long getIdVehiculo() {
+        return idVehiculo;
+    }
 }

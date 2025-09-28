@@ -58,4 +58,31 @@ public class Servicio {
     }
 
     // getters y setters
+    public String getTipoServicio() {
+        return tipoServicio;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public UsuarioServicio getUsuarioServicio() {
+        return usuarioServicio;
+    }
+
+    public UsuarioConductor getUsuarioConductor() {
+        return usuarioConductor;
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public Long getIdServicio() {
+        return idServicio;
+    }
 }

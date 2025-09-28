@@ -39,4 +39,19 @@ public class Revision {
     }
 
     // getters y setters
+        public Servicio getServicio() {
+        return servicio;
+    }
+
+    public Usuario getUsuarioRevisado() {
+        return usuarioRevisado;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
 }

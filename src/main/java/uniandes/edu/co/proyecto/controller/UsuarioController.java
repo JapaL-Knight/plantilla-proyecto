@@ -1,8 +1,9 @@
 package uniandes.edu.co.proyecto.controller;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.proyecto.modelo.Usuario;
@@ -21,37 +23,57 @@ import uniandes.edu.co.proyecto.repositorio.UsuarioRepository;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepo;
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepo.findAll();
+    public Collection<Usuario> darUsuarios() {
+        return usuarioRepository.darUsuarios();
+    }
+
+    @GetMapping("/{cedula}")
+    public ResponseEntity<?> darUsuario(@PathVariable("cedula") String cedula) {
+        Usuario usuario = usuarioRepository.darUsuario(cedula);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Usuario no encontrado");
+        }
+        return ResponseEntity.ok(usuario);
     }
 
     @PostMapping
-    public Usuario crearUsuario(@RequestBody Usuario usuario) {
-        return usuarioRepo.save(usuario);
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+        try {
+            usuarioRepository.insertarUsuario(
+                    usuario.getCedula(),
+                    usuario.getNombre(),
+                    usuario.getCorreo(),
+                    usuario.getCelular(),
+                    usuario.getCalificacion()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body("✅ Usuario creado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al crear Usuario: " + e.getMessage());
+        }
     }
 
-    @GetMapping("/{id}")
-    public Usuario obtenerUsuario(@PathVariable Long id) {
-        return usuarioRepo.findById(id).orElse(null);
+    @PutMapping("/{cedula}/correo")
+    public ResponseEntity<?> actualizarCorreo(@PathVariable("cedula") String cedula, @RequestParam String correo) {
+        try {
+            usuarioRepository.actualizarCorreo(cedula, correo);
+            return ResponseEntity.ok("✅ Correo actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al actualizar correo: " + e.getMessage());
+        }
     }
 
-    @PutMapping("/{id}")
-    public Usuario actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        usuario.setIdUsuario(id);
-        return usuarioRepo.save(usuario);
+    @DeleteMapping("/{cedula}")
+    public ResponseEntity<?> eliminarUsuario(@PathVariable("cedula") String cedula) {
+        try {
+            usuarioRepository.eliminarUsuario(cedula);
+            return ResponseEntity.ok("✅ Usuario eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al eliminar Usuario: " + e.getMessage());
+        }
     }
 
-    @DeleteMapping("/{id}")
-    public void borrarUsuario(@PathVariable Long id) {
-        usuarioRepo.deleteById(id);
-    }
-
-        @GetMapping("/consultarPorUsuario/{idUsuario}")
-    public ResponseEntity<?> consultarServiciosPorUsuario(@PathVariable Long idUsuario) {
-        return ResponseEntity.ok(usuarioRepo.consultarServiciosPorUsuario(idUsuario));
-    }
 
 }

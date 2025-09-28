@@ -1,42 +1,67 @@
 package uniandes.edu.co.proyecto.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
 import uniandes.edu.co.proyecto.modelo.Viaje;
 import uniandes.edu.co.proyecto.repositorio.ViajeRepository;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/viajes")
 public class ViajeController {
 
     @Autowired
-    private ViajeRepository repo;
+    private ViajeRepository viajeRepository;
 
     @GetMapping
-    public List<Viaje> listar() {
-        return repo.findAll();
-    }
-
-    @PostMapping
-    public Viaje crear(@RequestBody Viaje v) {
-        return repo.save(v);
+    public Collection<Viaje> darViajes() {
+        return viajeRepository.darViajes();
     }
 
     @GetMapping("/{id}")
-    public Viaje obtener(@PathVariable Long id) {
-        return repo.findById(id).orElse(null);
+    public ResponseEntity<?> darViaje(@PathVariable("id") Long id) {
+        Viaje viaje = viajeRepository.darViaje(id);
+        if (viaje == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Viaje no encontrado");
+        }
+        return ResponseEntity.ok(viaje);
     }
 
-    @PutMapping("/{id}")
-    public Viaje actualizar(@PathVariable Long id, @RequestBody Viaje v) {
-        v.setIdViaje(id);
-        return repo.save(v);
+    @PostMapping
+    public ResponseEntity<?> crearViaje(@RequestBody Viaje viaje) {
+        try {
+            viajeRepository.insertarViaje(
+                    viaje.getServicio().getIdServicio(),
+                    viaje.getHoraInicio().toString(),
+                    viaje.getHoraFin().toString(),
+                    viaje.getCosto()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body("✅ Viaje creado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al crear Viaje: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/costo")
+    public ResponseEntity<?> actualizarCosto(@PathVariable("id") Long id, @RequestParam double costo) {
+        try {
+            viajeRepository.actualizarCosto(id, costo);
+            return ResponseEntity.ok("✅ Costo actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al actualizar costo: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void borrar(@PathVariable Long id) {
-        repo.deleteById(id);
+    public ResponseEntity<?> eliminarViaje(@PathVariable("id") Long id) {
+        try {
+            viajeRepository.eliminarViaje(id);
+            return ResponseEntity.ok("✅ Viaje eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error al eliminar Viaje: " + e.getMessage());
+        }
     }
 }

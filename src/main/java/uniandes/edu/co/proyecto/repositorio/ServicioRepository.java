@@ -57,4 +57,20 @@ public interface ServicioRepository extends JpaRepository<Servicio, Long> {
     @Query(value = "DELETE FROM SERVICIO WHERE IDSERVICIO = :id", nativeQuery = true)
     void eliminarServicio(@Param("id") Long id);
 
+    @Query(value = "SELECT V.PLACA, S.TIPOSERVICIO, SUM(S.COSTO) " +
+                   "FROM SERVICIO S JOIN VEHICULO V ON S.IDVEHICULO = V.IDVEHICULO " +
+                   "WHERE S.IDUSUARIOCONDUCTOR = :idConductor " +
+                   "GROUP BY V.PLACA, S.TIPOSERVICIO",
+           nativeQuery = true)
+    Collection<Object[]> gananciasPorVehiculoYServicio(@Param("idConductor") Long idConductor);
+
+    @Query(value = "SELECT P.CIUDAD, COUNT(S.IDSERVICIO) " +
+                   "FROM SERVICIO S JOIN PUNTO P ON S.IDSERVICIO = P.IDSERVICIO " +
+                   "WHERE P.CIUDAD = :ciudad AND S.FECHA BETWEEN :inicio AND :fin " +
+                   "GROUP BY P.CIUDAD",
+           nativeQuery = true)
+    Collection<Object[]> utilizacionPorCiudad(@Param("ciudad") String ciudad,
+                                              @Param("inicio") java.sql.Date inicio,
+                                              @Param("fin") java.sql.Date fin);
+
 }
