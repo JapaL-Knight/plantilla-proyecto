@@ -1,46 +1,42 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PUNTO")
 public class Punto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "IDPUNTO")
+    private Long idPunto;   // lo manejarás con secuencia manual en Oracle
 
-    @Column(nullable = false)
-    private double longitud;
+    private Long idCiudad;
 
-    @Column(nullable = false)
-    private double latitud;
-
-    @Column(nullable = false, length = 200)
     private String direccion;
 
-    @Column(nullable = false, length = 100)
-    private String ciudad;
+    private Double longitud;
 
-    @Column(nullable = false)
-    private int orden;
+    private Double latitud;
 
-    // relación con Servicio
-    @ManyToOne
-    @JoinColumn(name = "idServicio", nullable = false)
-    private Servicio servicio;
+    private Integer orden;
 
-    public void setId(Long id2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
-    }
+    // Getters y Setters
 
-    // getters y setters
+    public Long getIdPunto() { return idPunto; }
+    public void setIdPunto(Long idPunto) { this.idPunto = idPunto; }
+
+    public Long getIdCiudad() { return idCiudad; }
+    public void setIdCiudad(Long idCiudad) { this.idCiudad = idCiudad; }
+
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
+
+    public Double getLongitud() { return longitud; }
+    public void setLongitud(Double longitud) { this.longitud = longitud; }
+
+    public Double getLatitud() { return latitud; }
+    public void setLatitud(Double latitud) { this.latitud = latitud; }
+
+    public Integer getOrden() { return orden; }
+    public void setOrden(Integer orden) { this.orden = orden; }
 }
