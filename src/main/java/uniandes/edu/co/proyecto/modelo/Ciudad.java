@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,7 +12,8 @@ import jakarta.persistence.Table;
 public class Ciudad {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // o SEQUENCE en Oracle
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ciudad_seq")
+    @SequenceGenerator(name = "ciudad_seq", sequenceName = "CIUDAD_SEQ", allocationSize = 1)
     private Long idCiudad;
 
     private String nombre;

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +15,8 @@ import jakarta.persistence.Table;
 public class Revision {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "revision_seq")
+    @SequenceGenerator(name = "revision_seq", sequenceName = "REVISION_SEQ", allocationSize = 1)
     private Long idRevision;
 
     @Column(nullable = false)
@@ -34,8 +36,7 @@ public class Revision {
     private Usuario usuarioRevisado;
 
     public void setIdRevision(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdRevision'");
+        this.idRevision = id;
     }
 
     // getters y setters
@@ -43,15 +44,35 @@ public class Revision {
         return servicio;
     }
 
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
     public Usuario getUsuarioRevisado() {
         return usuarioRevisado;
+    }
+
+    public void setUsuarioRevisado(Usuario usuarioRevisado) {
+        this.usuarioRevisado = usuarioRevisado;
     }
 
     public int getCalificacion() {
         return calificacion;
     }
 
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
+    }
+
     public String getComentario() {
         return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public Long getIdRevision() {
+        return idRevision;
     }
 }

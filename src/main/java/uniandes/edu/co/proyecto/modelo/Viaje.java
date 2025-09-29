@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +15,8 @@ import jakarta.persistence.Table;
 public class Viaje {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "viaje_seq")
+    @SequenceGenerator(name = "viaje_seq", sequenceName = "VIAJE_SEQ", allocationSize = 1)
     private Long idViaje;
 
     @Column(nullable = false)
@@ -32,8 +34,7 @@ public class Viaje {
     private Servicio servicio;
 
     public void setIdViaje(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdViaje'");
+        this.idViaje = id;
     }
 
     // getters y setters
@@ -41,15 +42,35 @@ public class Viaje {
         return servicio;
     }
 
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
     public String getHoraInicio() {
         return horaInicio;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
     }
 
     public String getHoraFin() {
         return horaFin;
     }
 
+    public void setHoraFin(String horaFin) {
+        this.horaFin = horaFin;
+    }
+
     public double getCosto() {
         return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public Long getIdViaje() {
+        return idViaje;
     }
 }

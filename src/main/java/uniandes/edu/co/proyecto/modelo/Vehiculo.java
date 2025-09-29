@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +15,8 @@ import jakarta.persistence.Table;
 public class Vehiculo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehiculo_seq")
+    @SequenceGenerator(name = "vehiculo_seq", sequenceName = "VEHICULO_SEQ", allocationSize = 1)
     private Long idVehiculo;
 
     @Column(nullable = false, unique = true)
@@ -46,24 +48,48 @@ public class Vehiculo {
         return placa;
     }
 
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
     public String getMarca() {
         return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     public String getModelo() {
         return modelo;
     }
 
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
     public int getCapacidadPasajeros() {
         return capacidadPasajeros;
+    }
+
+    public void setCapacidadPasajeros(int capacidadPasajeros) {
+        this.capacidadPasajeros = capacidadPasajeros;
     }
 
     public String getNivel() {
         return nivel;
     }
 
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
+    }
+
     public UsuarioConductor getUsuarioConductor() {
         return usuarioConductor;
+    }
+
+    public void setUsuarioConductor(UsuarioConductor usuarioConductor) {
+        this.usuarioConductor = usuarioConductor;
     }
 
     public Long getIdVehiculo() {

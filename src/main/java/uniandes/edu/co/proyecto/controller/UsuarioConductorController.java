@@ -4,84 +4,82 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import uniandes.edu.co.proyecto.modelo.UsuarioServicio;
-import uniandes.edu.co.proyecto.repositorio.UsuarioServicioRepository;
+import uniandes.edu.co.proyecto.modelo.UsuarioConductor;
+import uniandes.edu.co.proyecto.repositorio.UsuarioConductorRepository;
 
-import java.util.Collection;
+import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios_servicio")
+@RequestMapping("/usuarios_conductor")
 public class UsuarioConductorController {
 
     @Autowired
-    private UsuarioServicioRepository usuarioServicioRepository;
+    private UsuarioConductorRepository usuarioConductorRepository;
 
-    // ✅ Obtener todos los usuarios de servicio
+    // ✅ Obtener todos los usuarios conductor (usando JPA básico)
     @GetMapping
-    public Collection<UsuarioServicio> darUsuariosServicio() {
-        return usuarioServicioRepository.darUsuariosServicio();
+    public List<UsuarioConductor> darUsuariosConductor() {
+        return usuarioConductorRepository.findAll();
     }
 
-    // ✅ Buscar un usuario de servicio por cédula
-    @GetMapping("/{cedula}")
-    public ResponseEntity<?> darUsuarioServicio(@PathVariable("cedula") String cedula) {
-        UsuarioServicio usuario = usuarioServicioRepository.darUsuarioServicio(cedula);
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Usuario de servicio no encontrado");
+    // ✅ Buscar un usuario conductor por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> darUsuarioConductor(@PathVariable("id") Long id) {
+        try {
+            UsuarioConductor usuario = usuarioConductorRepository.findById(id).orElse(null);
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Usuario conductor no encontrado");
+            }
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Error: " + e.getMessage());
         }
-        return ResponseEntity.ok(usuario);
     }
 
-    // ✅ Crear un nuevo usuario de servicio (RF2 exitoso)
+    // ✅ Crear un nuevo usuario conductor (usando JPA básico)
     @PostMapping
-    public ResponseEntity<?> crearUsuarioServicio(@RequestBody UsuarioServicio usuario) {
+    public ResponseEntity<?> crearUsuarioConductor(@RequestBody UsuarioConductor usuario) {
         try {
-            usuarioServicioRepository.insertarUsuarioServicio(
-                usuario.getCedula(),
-                usuario.getNombre(),
-                usuario.getCorreo(),
-                usuario.getCelular(),
-                usuario.getCalificacion(),
-                usuario.getNumTarjeta(),
-                usuario.getNombreTarjeta(),
-                usuario.getVencimiento(),
-                usuario.getCodigoSeguridad()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body("✅ Usuario de servicio creado correctamente");
+            UsuarioConductor nuevoUsuario = usuarioConductorRepository.save(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body("✅ Usuario conductor creado correctamente. ID: " + nuevoUsuario.getIdUsuario());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("❌ Error al crear Usuario de servicio: " + e.getMessage());
+                                 .body("❌ Error al crear Usuario conductor: " + e.getMessage());
         }
     }
 
-    // ✅ Actualizar la tarjeta de un usuario de servicio
-    @PutMapping("/{cedula}/tarjeta")
-    public ResponseEntity<?> actualizarTarjeta(@PathVariable("cedula") String cedula,
-                                               @RequestBody UsuarioServicio usuario) {
+    // ✅ Actualizar un usuario conductor
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarUsuarioConductor(@PathVariable("id") Long id,
+                                                        @RequestBody UsuarioConductor usuario) {
         try {
-            usuarioServicioRepository.actualizarTarjeta(
-                cedula,
-                usuario.getNumTarjeta(),
-                usuario.getNombreTarjeta(),
-                usuario.getVencimiento(),
-                usuario.getCodigoSeguridad()
-            );
-            return ResponseEntity.ok("✅ Tarjeta actualizada correctamente");
+            if (!usuarioConductorRepository.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Usuario conductor no encontrado");
+            }
+            
+            usuario.setIdUsuario(id);
+            usuarioConductorRepository.save(usuario);
+            
+            return ResponseEntity.ok("✅ Usuario conductor actualizado correctamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("❌ Error al actualizar tarjeta: " + e.getMessage());
+                                 .body("❌ Error al actualizar Usuario conductor: " + e.getMessage());
         }
     }
 
-    // ✅ Eliminar un usuario de servicio por cédula
-    @DeleteMapping("/{cedula}")
-    public ResponseEntity<?> eliminarUsuarioServicio(@PathVariable("cedula") Long cedula) {
+    // ✅ Eliminar un usuario conductor por ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarUsuarioConductor(@PathVariable("id") Long id) {
         try {
-            usuarioServicioRepository.eliminarUsuarioServicio(cedula);
-            return ResponseEntity.ok("✅ Usuario de servicio eliminado correctamente");
+            if (!usuarioConductorRepository.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Usuario conductor no encontrado");
+            }
+            
+            usuarioConductorRepository.deleteById(id);
+            return ResponseEntity.ok("✅ Usuario conductor eliminado correctamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("❌ Error al eliminar Usuario de servicio: " + e.getMessage());
+                                 .body("❌ Error al eliminar Usuario conductor: " + e.getMessage());
         }
     }
 }

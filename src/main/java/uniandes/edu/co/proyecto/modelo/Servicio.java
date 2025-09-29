@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,7 +19,8 @@ import jakarta.persistence.Table;
 public class Servicio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "servicio_seq")
+    @SequenceGenerator(name = "servicio_seq", sequenceName = "SERVICIO_SEQ", allocationSize = 1)
     private Long idServicio;
 
     @Column(nullable = false)
@@ -53,8 +55,7 @@ public class Servicio {
     private List<Viaje> viajes;
 
     public void setIdServicio(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdServicio'");
+        this.idServicio = id;
     }
 
     // getters y setters
@@ -62,24 +63,72 @@ public class Servicio {
         return tipoServicio;
     }
 
+    public void setTipoServicio(String tipoServicio) {
+        this.tipoServicio = tipoServicio;
+    }
+
     public Date getFecha() {
         return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public double getCosto() {
         return costo;
     }
 
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
     public UsuarioServicio getUsuarioServicio() {
         return usuarioServicio;
+    }
+
+    public void setUsuarioServicio(UsuarioServicio usuarioServicio) {
+        this.usuarioServicio = usuarioServicio;
     }
 
     public UsuarioConductor getUsuarioConductor() {
         return usuarioConductor;
     }
 
+    public void setUsuarioConductor(UsuarioConductor usuarioConductor) {
+        this.usuarioConductor = usuarioConductor;
+    }
+
     public Vehiculo getVehiculo() {
         return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    public List<Punto> getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(List<Punto> puntos) {
+        this.puntos = puntos;
+    }
+
+    public List<Revision> getRevisiones() {
+        return revisiones;
+    }
+
+    public void setRevisiones(List<Revision> revisiones) {
+        this.revisiones = revisiones;
+    }
+
+    public List<Viaje> getViajes() {
+        return viajes;
+    }
+
+    public void setViajes(List<Viaje> viajes) {
+        this.viajes = viajes;
     }
 
     public Long getIdServicio() {

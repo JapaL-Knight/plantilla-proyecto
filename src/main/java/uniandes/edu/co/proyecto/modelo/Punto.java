@@ -20,6 +20,11 @@ public class Punto {
 
     private Integer orden;
 
+    // relación con Servicio
+    @ManyToOne
+    @JoinColumn(name = "idServicio")
+    private Servicio servicio;
+
     // Getters y Setters
 
     public Long getIdPunto() { return idPunto; }
@@ -39,4 +44,7 @@ public class Punto {
 
     public Integer getOrden() { return orden; }
     public void setOrden(Integer orden) { this.orden = orden; }
+
+    public Servicio getServicio() { return servicio; }
+    public void setServicio(Servicio servicio) { this.servicio = servicio; }
 }
