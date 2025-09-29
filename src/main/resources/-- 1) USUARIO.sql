@@ -129,3 +129,11 @@ ALTER TABLE Servicio
 ADD costoTotal DECIMAL(12,2) NOT NULL;
 
 ALTER TABLE Servicio ADD (fechaInicio TIMESTAMP, fechaFin TIMESTAMP);
+
+CREATE SEQUENCE ALPESCAB_SEQUENCE
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+SELECT sequence_name FROM user_sequences WHERE sequence_name = 'ALPESCAB_SEQUENCE';

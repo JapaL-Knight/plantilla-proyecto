@@ -14,6 +14,7 @@ import uniandes.edu.co.proyecto.modelo.Ciudad;
 @Repository
 public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
 
+
     //  Consultar todas las ciudades
     @Query(value = "SELECT * FROM CIUDAD", nativeQuery = true)
     Collection<Ciudad> darCiudades();
