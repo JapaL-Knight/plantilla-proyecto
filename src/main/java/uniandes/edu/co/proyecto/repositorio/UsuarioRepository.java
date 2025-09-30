@@ -15,28 +15,27 @@ import uniandes.edu.co.proyecto.modelo.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    // RFC1: Historial de servicios pedidos por un usuario de servicio
+
     @Query("SELECT s FROM Servicio s WHERE s.usuarioServicio.idUsuario = :idUsuario")
     List<Servicio> historialServiciosUsuario(Long idUsuario);
     
     Usuario findByCedula(String cedula);
     
-    //  Consultar todos los usuarios
+
     @Query(value = "SELECT * FROM USUARIO", nativeQuery = true)
     Collection<Usuario> darUsuarios();
 
-    //  Consultar usuario por id
     @Query(value = "SELECT * FROM USUARIO WHERE idusuario = :id", nativeQuery = true)
     Usuario darUsuario(@Param("id") String cedula);
 
-    //  Eliminar usuario por id
+
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM USUARIO WHERE idusuario = :id", nativeQuery = true)
     void eliminarUsuario(@Param(value = "id")
             String cedula);
     
-    //  Insertar usuario
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO USUARIO (CEDULA, NOMBRE, CORREO, CELULAR, CALIFICACION) " +
@@ -48,7 +47,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                          @Param("celular") String celular,
                          @Param("calificacion") int calificacion);
 
-    //  Actualizar usuario
     @Modifying
     @Transactional
     @Query(value = "UPDATE USUARIO SET nombre = :nombre, correo = :correo, celular = :celular, calificacion = :calificacion WHERE idusuario = :id", nativeQuery = true)
@@ -58,7 +56,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                            @Param("celular") String celular,
                            @Param("calificacion") int calificacion);
 
-       // RFC 1
+
     @Query(value = "SELECT s.IDSERVICIO, " +
                    "       v.PLACA, v.MARCA, v.MODELO, v.COLOR, v.CAPACIDADPASAJEROS, v.TIPOVEHICULO, v.NIVEL, " +
                    "       uc.IDUSUARIOCONDUCTOR, u.NOMBRE AS NOMBRECONDUCTOR, u.CEDULA AS CEDULACONDUCTOR, " +

@@ -25,12 +25,10 @@ public class Revision {
     @Column(nullable = false, length = 200)
     private String comentario;
 
-    // relación con Servicio
     @ManyToOne
     @JoinColumn(name = "idServicio", nullable = false)
     private Servicio servicio;
 
-    // relación con Usuario revisado
     @ManyToOne
     @JoinColumn(name = "idUsuarioRevisado", nullable = false)
     private Usuario usuarioRevisado;
@@ -39,7 +37,6 @@ public class Revision {
         this.idRevision = id;
     }
 
-    // getters y setters
         public Servicio getServicio() {
         return servicio;
     }

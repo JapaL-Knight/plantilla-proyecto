@@ -18,17 +18,15 @@ public interface PuntoRepository extends JpaRepository<Punto, Long> {
     @Query("SELECT p FROM Punto p WHERE p.servicio.idServicio = :idServicio ORDER BY p.orden ASC")
     List<Punto> puntosDeServicio(Long idServicio);
 
-    // ✅ Dar todos los puntos
-    // @Query(value = "SELECT * FROM PUNTO", nativeQuery = true)
     @Query(value = "SELECT column_name, data_type, data_length, nullable FROM user_tab_columns WHERE table_name = 'PUNTOS' ORDER BY column_id;", nativeQuery = true)
 
     Collection<Punto> darPuntos();
 
-    // ✅ Buscar punto por id
+
     @Query(value = "SELECT * FROM PUNTO WHERE IDPUNTO = :id", nativeQuery = true)
     Punto darPunto(@Param("id") long id);
 
-    // ✅ Buscar puntos por ciudad
+
     @Query(value = "SELECT * FROM PUNTO WHERE IDCIUDAD = :idCiudad", nativeQuery = true)
     Collection<Punto> darPuntosPorCiudad(@Param("idCiudad") long idCiudad);
 
@@ -47,7 +45,7 @@ public interface PuntoRepository extends JpaRepository<Punto, Long> {
 
 
 
-    // ✅ Actualizar punto
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE PUNTO SET IDCIUDAD = :idCiudad, DIRECCION = :direccion, " +
@@ -60,7 +58,7 @@ public interface PuntoRepository extends JpaRepository<Punto, Long> {
                          @Param("latitud") Double latitud,
                          @Param("orden") Integer orden);
 
-    // ✅ Eliminar punto
+
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM PUNTO WHERE IDPUNTO = :id", nativeQuery = true)

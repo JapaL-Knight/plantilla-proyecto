@@ -16,19 +16,19 @@ public interface UsuarioServicioRepository extends JpaRepository<UsuarioServicio
 
     boolean existsByNumTarjeta(String numTarjeta);
     
-    // ✅ Dar todos los usuarios de servicio
+
     @Query(value = "SELECT * FROM USUARIO_SERVICIO", nativeQuery = true)
     Collection<UsuarioServicio> darUsuariosServicio();
 
-    // ✅ Buscar por cédula
+
     @Query(value = "SELECT * FROM USUARIO_SERVICIO WHERE CEDULA = :cedula", nativeQuery = true)
     UsuarioServicio darUsuarioServicio(@Param("cedula") String cedula);
 
-    // ✅ Buscar por número de tarjeta
+
     @Query(value = "SELECT * FROM USUARIO_SERVICIO WHERE NUMTARJETA = :numTarjeta", nativeQuery = true)
     UsuarioServicio darUsuarioPorTarjeta(@Param("numTarjeta") String numTarjeta);
 
-    // ✅ Insertar un nuevo usuario de servicio
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO USUARIO_SERVICIO (CEDULA, NOMBRE, CORREO, CELULAR, CALIFICACION, NUMTARJETA, NOMBRETARJETA, VENCIMIENTO, CODIGOSEGURIDAD) " +
@@ -44,7 +44,7 @@ public interface UsuarioServicioRepository extends JpaRepository<UsuarioServicio
                                  @Param("vencimiento") String vencimiento,
                                  @Param("codigoSeguridad") int codigoSeguridad);
 
-    // ✅ Actualizar datos de tarjeta de un usuario
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE USUARIO_SERVICIO SET NUMTARJETA = :numTarjeta, NOMBRETARJETA = :nombreTarjeta, " +
@@ -57,7 +57,7 @@ public interface UsuarioServicioRepository extends JpaRepository<UsuarioServicio
                            @Param("vencimiento") String vencimiento,
                            @Param("codigoSeguridad") int codigoSeguridad);
 
-    // ✅ Eliminar usuario de servicio
+
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM USUARIO_SERVICIO WHERE CEDULA = :cedula", nativeQuery = true)

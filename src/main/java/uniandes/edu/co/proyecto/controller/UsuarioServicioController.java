@@ -1,13 +1,21 @@
 package uniandes.edu.co.proyecto.controller;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.proyecto.modelo.UsuarioServicio;
 import uniandes.edu.co.proyecto.repositorio.UsuarioServicioRepository;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/usuarios_servicio")
@@ -16,13 +24,12 @@ public class UsuarioServicioController {
     @Autowired
     private UsuarioServicioRepository usuarioServicioRepository;
 
-    // ✅ Dar todos los usuarios de servicio
+
     @GetMapping
     public Collection<UsuarioServicio> darUsuariosServicio() {
         return usuarioServicioRepository.darUsuariosServicio();
     }
 
-    // ✅ Dar un usuario por cédula
     @GetMapping("/{cedula}")
     public ResponseEntity<?> darUsuarioServicio(@PathVariable("cedula") String cedula) {
         UsuarioServicio usuario = usuarioServicioRepository.darUsuarioServicio(cedula);
@@ -32,7 +39,7 @@ public class UsuarioServicioController {
         return ResponseEntity.ok(usuario);
     }
 
-    // ✅ Crear un nuevo usuario de servicio (RF2)
+
     @PostMapping
     public ResponseEntity<?> crearUsuarioServicio(@RequestBody UsuarioServicio usuario) {
         try {
@@ -54,7 +61,6 @@ public class UsuarioServicioController {
         }
     }
 
-    // ✅ Actualizar tarjeta de un usuario
     @PutMapping("/{cedula}/tarjeta")
     public ResponseEntity<?> actualizarTarjeta(@PathVariable("cedula") String cedula,
                                                @RequestBody UsuarioServicio usuario) {
@@ -73,7 +79,6 @@ public class UsuarioServicioController {
         }
     }
 
-    // ✅ Eliminar un usuario de servicio
     @DeleteMapping("/{cedula}")
     public ResponseEntity<?> eliminarUsuarioServicio(@PathVariable("cedula") Long cedula) {
         try {

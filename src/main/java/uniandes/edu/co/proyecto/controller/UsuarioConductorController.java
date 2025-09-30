@@ -1,13 +1,21 @@
 package uniandes.edu.co.proyecto.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.proyecto.modelo.UsuarioConductor;
 import uniandes.edu.co.proyecto.repositorio.UsuarioConductorRepository;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios_conductor")
@@ -16,7 +24,6 @@ public class UsuarioConductorController {
     @Autowired
     private UsuarioConductorRepository usuarioConductorRepository;
 
-    // ✅ Obtener todos los usuarios conductor (usando JPA básico)
     @GetMapping
     public List<UsuarioConductor> darUsuariosConductor() {
         return usuarioConductorRepository.findAll();
@@ -36,7 +43,6 @@ public class UsuarioConductorController {
         }
     }
 
-    // ✅ Crear un nuevo usuario conductor (usando JPA básico)
     @PostMapping
     public ResponseEntity<?> crearUsuarioConductor(@RequestBody UsuarioConductor usuario) {
         try {
@@ -48,7 +54,6 @@ public class UsuarioConductorController {
         }
     }
 
-    // ✅ Actualizar un usuario conductor
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarUsuarioConductor(@PathVariable("id") Long id,
                                                         @RequestBody UsuarioConductor usuario) {
@@ -67,7 +72,6 @@ public class UsuarioConductorController {
         }
     }
 
-    // ✅ Eliminar un usuario conductor por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuarioConductor(@PathVariable("id") Long id) {
         try {

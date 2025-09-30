@@ -21,7 +21,7 @@ public class Ciudad {
     @Column(name = "NOMBRE")
     private String nombre;
 
-    // Getters y Setters
+
     public Long getIdCiudad() { return idCiudad; }
     public void setIdCiudad(Long idCiudad) { this.idCiudad = idCiudad; }
 

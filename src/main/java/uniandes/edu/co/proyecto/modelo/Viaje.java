@@ -28,7 +28,6 @@ public class Viaje {
     @Column(nullable = false)
     private double costo;
 
-    // relación con Servicio
     @ManyToOne
     @JoinColumn(name = "idServicio", nullable = false)
     private Servicio servicio;
@@ -37,7 +36,6 @@ public class Viaje {
         this.idViaje = id;
     }
 
-    // getters y setters
     public Servicio getServicio() {
         return servicio;
     }

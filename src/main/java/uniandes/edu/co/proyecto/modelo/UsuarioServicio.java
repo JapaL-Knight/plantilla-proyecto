@@ -20,7 +20,6 @@ public class UsuarioServicio extends Usuario {
     @Column(nullable = false)
     private int codigoSeguridad;
 
-    // Getters y Setters
     public String getNumTarjeta() {
         return numTarjeta;
     }

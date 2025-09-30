@@ -16,7 +16,6 @@ import uniandes.edu.co.proyecto.modelo.Vehiculo;
 public interface VehiculoRepository extends JpaRepository<Vehiculo, Long> {
     Vehiculo findByPlaca(String placa);
 
-    // RFC3: Total de dinero obtenido por cada vehículo del conductor
     @Query("SELECT v.placa, s.tipoServicio, SUM(s.costo) " +
            "FROM Servicio s JOIN s.vehiculo v " +
            "WHERE s.usuarioConductor.idUsuario = :idConductor " +

@@ -13,7 +13,6 @@ public class UsuarioConductor extends Usuario {
     @OneToMany(mappedBy = "usuarioConductor")
     private List<Vehiculo> vehiculos;
 
-    // Getters y Setters
     public List<Vehiculo> getVehiculos() {
         return vehiculos;
     }

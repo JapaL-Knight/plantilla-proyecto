@@ -35,7 +35,6 @@ public class Usuario {
     @Column(nullable = false)
     private int calificacion;
 
-    // Getters y Setters
     public Long getIdUsuario() {
         return idUsuario;
     }

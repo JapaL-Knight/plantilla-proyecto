@@ -15,27 +15,22 @@ import uniandes.edu.co.proyecto.modelo.Ciudad;
 public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
 
 
-    //  Consultar todas las ciudades
     @Query(value = "SELECT * FROM CIUDAD", nativeQuery = true)
     Collection<Ciudad> darCiudades();
 
-    //  Consultar ciudad por id
     @Query(value = "SELECT * FROM CIUDAD WHERE idCiudad = :id", nativeQuery = true)
     Ciudad darCiudad(@Param("id") long id);
 
-    // Insertar ciudad
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO CIUDAD (idCiudad, nombre) VALUES (alpescab_sequence.nextval, :nombre)", nativeQuery = true)
     void insertarCiudad(@Param("nombre") String nombre);
 
-    // Eliminar ciudad
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM CIUDAD WHERE idCiudad = :id", nativeQuery = true)
     void eliminarCiudad(@Param("id") long id);
 
-    //  Actualizar ciudad
     @Modifying
     @Transactional
     @Query(value = "UPDATE CIUDAD SET nombre = :nombre WHERE idCiudad = :id", nativeQuery = true)

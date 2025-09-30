@@ -1,13 +1,21 @@
 package uniandes.edu.co.proyecto.controller;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.proyecto.modelo.Punto;
 import uniandes.edu.co.proyecto.repositorio.PuntoRepository;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/puntos")
@@ -16,13 +24,11 @@ public class PuntoController {
     @Autowired
     private PuntoRepository puntoRepository;
 
-    // ✅ Dar todos los puntos
     @GetMapping
     public Collection<Punto> darPuntos() {
         return puntoRepository.darPuntos();
     }
 
-    // ✅ Buscar un punto por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> darPunto(@PathVariable("id") Long id) {
         System.out.println("Buscando punto con ID: " + id);
@@ -33,13 +39,11 @@ public class PuntoController {
         return ResponseEntity.ok(p);
     }
 
-    // ✅ Buscar puntos por ciudad
     @GetMapping("/ciudad/{idCiudad}")
     public Collection<Punto> darPuntosPorCiudad(@PathVariable("idCiudad") Long idCiudad) {
         return puntoRepository.darPuntosPorCiudad(idCiudad);
     }
 
-    // ✅ Crear un nuevo punto (RF1)
     @PostMapping
     public ResponseEntity<?> crearPunto(@RequestBody Punto punto) {
         System.out.println("Creando punto: " + punto.getIdCiudad() + ", " + punto.getDireccion() + ", " + 
@@ -67,13 +71,7 @@ public class PuntoController {
                                  .body("❌ Error al crear punto: " + e.getMessage());
         }
     }
-    // @PostMapping
-    // public ResponseEntity<Punto> crearPunto(@RequestBody Punto punto) {
-    // Punto nuevo = puntoRepository.save(punto);
-    // return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
-    // }
 
-    // ✅ Actualizar un punto
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarPunto(@PathVariable("id") Long id, @RequestBody Punto punto) {
         try {
@@ -92,7 +90,6 @@ public class PuntoController {
         }
     }
 
-    // ✅ Eliminar un punto
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarPunto(@PathVariable("id") Long id) {
         try {

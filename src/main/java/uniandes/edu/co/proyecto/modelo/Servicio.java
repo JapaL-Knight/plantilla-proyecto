@@ -33,7 +33,7 @@ public class Servicio {
     private Long idTarifa; 
 
     @Column(nullable = false)
-    private String tipoServicio; // TRANSPORTE, DOMICILIO, MERCANCIA
+    private String tipoServicio;
 
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -42,7 +42,6 @@ public class Servicio {
     @Column(nullable = false)
     private double costo;
 
-    // relaciones
     @ManyToOne
     @JoinColumn(name = "idUsuarioConductor")
     private UsuarioConductor usuarioConductor;
@@ -68,7 +67,6 @@ public class Servicio {
         this.idServicio = id;
     }
 
-    // getters y setters
     public String getTipoServicio() {
         return tipoServicio;
     }

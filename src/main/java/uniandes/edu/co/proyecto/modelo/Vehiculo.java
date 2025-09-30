@@ -34,7 +34,6 @@ public class Vehiculo {
     @Column(nullable = false)
     private String nivel; // LARGE, COMFORT, ESTANDAR
 
-    // relación con conductor
     @ManyToOne
     @JoinColumn(name = "idUsuarioConductor")
     private UsuarioConductor usuarioConductor;
@@ -43,7 +42,6 @@ public class Vehiculo {
         this.idVehiculo = id;
     }
 
-    // getters y setters
     public String getPlaca() {
         return placa;
     }

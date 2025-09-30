@@ -14,23 +14,11 @@ public class CiudadController {
     @Autowired
     private CiudadRepository ciudadRepository;
 
-    // Registrar ciudad
-    // @PostMapping
-    // public String crearCiudad(@RequestBody Ciudad ciudad) {
-    //     if (ciudad.getNombre() == null || ciudad.getNombre().isBlank()) {
-    //         return "❌ Error: el nombre de la ciudad no puede ser vacío";
-    //     }
-    //     ciudadRepository.insertarCiudad(ciudad.getNombre());
-    //     return "Ciudad registrada exitosamente";
-    // }
-
-    // Consultar todas las ciudades
     @GetMapping
     public Iterable<Ciudad> listarCiudades() {
         return ciudadRepository.darCiudades();
     }
 
-    // Consultar ciudad por id
     @GetMapping("/{id}")
     public Ciudad getCiudad(@PathVariable Long id) {
         return ciudadRepository.darCiudad(id);
@@ -46,7 +34,7 @@ public class CiudadController {
     @PutMapping("/{id}")
     public ResponseEntity<Ciudad> actualizarCiudad(@PathVariable("id") Long id,
                                                @RequestBody Ciudad ciudad) {
-    ciudad.setIdCiudad(id);   // asignamos el id de la URL
+    ciudad.setIdCiudad(id);
     Ciudad actualizada = ciudadRepository.save(ciudad);
     return ResponseEntity.ok(actualizada);
     }

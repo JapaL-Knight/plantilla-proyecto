@@ -18,7 +18,7 @@ public class Punto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "punto_seq")
     @SequenceGenerator(name = "punto_seq", sequenceName = "ALPESCAB_SEQUENCE", allocationSize = 1)
     @Column(name = "IDPUNTO")
-    private Long idPunto;   // lo manejarás con secuencia manual en Oracle
+    private Long idPunto;
     @Column(name = "IDCUIDAD")
     private Long idCiudad;
     @Column(name = "DIRECCION")
@@ -30,7 +30,7 @@ public class Punto {
     @Column(name = "ORDEN")
     private Integer orden;
 
-    // relación con Servicio
+
     @ManyToOne
     @JoinColumn(name = "IDSERVICIO")
     private Servicio servicio;
@@ -40,7 +40,6 @@ public class Punto {
     private Ciudad ciudad;
 
 
-    // Getters y Setters
 
     public Long getIdPunto() { return idPunto; }
     public void setIdPunto(Long idPunto) { this.idPunto = idPunto; }
