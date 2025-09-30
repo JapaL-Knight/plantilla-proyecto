@@ -1,5 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,8 +15,10 @@ public class Ciudad {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ciudad_seq")
     @SequenceGenerator(name = "ciudad_seq", sequenceName = "ALPESCAB_SEQUENCE", allocationSize = 1)
+    @Column(name = "IDCIUDAD")
     private Long idCiudad;
 
+    @Column(name = "NOMBRE")
     private String nombre;
 
     // Getters y Setters

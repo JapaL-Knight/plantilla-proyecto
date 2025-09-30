@@ -1,7 +1,9 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,13 +23,21 @@ public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "servicio_seq")
     @SequenceGenerator(name = "servicio_seq", sequenceName = "SERVICIO_SEQ", allocationSize = 1)
+    @Column(name = "IDSERVICIO")
     private Long idServicio;
+
+    @Column(name = "DISTANCIAKM")
+    private Double distanciaKm;
+
+    @Column(name = "IDTARIFA")
+    private Long idTarifa; 
 
     @Column(nullable = false)
     private String tipoServicio; // TRANSPORTE, DOMICILIO, MERCANCIA
 
     @Column(nullable = false)
-    private Date fecha;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fecha;
 
     @Column(nullable = false)
     private double costo;
@@ -67,11 +77,11 @@ public class Servicio {
         this.tipoServicio = tipoServicio;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -133,5 +143,17 @@ public class Servicio {
 
     public Long getIdServicio() {
         return idServicio;
+    }
+    public Double getDistanciaKm() {
+        return distanciaKm;
+    }
+    public void setDistanciaKm(Double distanciaKm) {
+        this.distanciaKm = distanciaKm;
+    }
+    public Long getIdTarifa() {
+        return idTarifa;
+    }
+    public void setIdTarifa(Long idTarifa) {
+        this.idTarifa = idTarifa;
     }
 }

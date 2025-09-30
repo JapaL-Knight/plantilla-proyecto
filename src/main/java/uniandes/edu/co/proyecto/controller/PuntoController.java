@@ -25,6 +25,7 @@ public class PuntoController {
     // ✅ Buscar un punto por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> darPunto(@PathVariable("id") Long id) {
+        System.out.println("Buscando punto con ID: " + id);
         Punto p = puntoRepository.darPunto(id);
         if (p == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Punto no encontrado");
@@ -41,6 +42,8 @@ public class PuntoController {
     // ✅ Crear un nuevo punto (RF1)
     @PostMapping
     public ResponseEntity<?> crearPunto(@RequestBody Punto punto) {
+        System.out.println("Creando punto: " + punto.getIdCiudad() + ", " + punto.getDireccion() + ", " + 
+                           punto.getLongitud() + ", " + punto.getLatitud() + ", " + punto.getOrden());
         try { 
             if (punto.getIdCiudad() == null || 
                 punto.getDireccion() == null || punto.getDireccion().isBlank() ||
@@ -50,18 +53,25 @@ public class PuntoController {
             }
 
             puntoRepository.insertarPunto(
-                punto.getIdCiudad(),
-                punto.getDireccion(),
-                punto.getLongitud(),
-                punto.getLatitud(),
-                punto.getOrden()
-            );
+                    punto.getIdCiudad(),
+                    punto.getDireccion(),
+                    punto.getLongitud(),
+                    punto.getLatitud(),
+                    punto.getOrden(),
+                    punto.getServicio().getIdServicio()
+                );
+
             return ResponseEntity.status(HttpStatus.CREATED).body("✅ Punto creado correctamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                  .body("❌ Error al crear punto: " + e.getMessage());
         }
     }
+    // @PostMapping
+    // public ResponseEntity<Punto> crearPunto(@RequestBody Punto punto) {
+    // Punto nuevo = puntoRepository.save(punto);
+    // return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+    // }
 
     // ✅ Actualizar un punto
     @PutMapping("/{id}")

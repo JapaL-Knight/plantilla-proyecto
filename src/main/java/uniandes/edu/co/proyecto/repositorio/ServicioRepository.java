@@ -1,6 +1,8 @@
 package uniandes.edu.co.proyecto.repositorio;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,7 +21,14 @@ public interface ServicioRepository extends JpaRepository<Servicio, Long> {
            "FROM Servicio s " +
            "WHERE s.usuarioConductor.idUsuario = :idConductor " +
            "GROUP BY s.vehiculo.placa, s.tipoServicio")
-    Collection<Object[]> gananciasPorConductor(Long idConductor);
+    List<Object[]> gananciasPorConductor(Long idConductor);
+
+    // RFC4: Utilización de servicios en ciudad por rango de fechas
+    @Query("SELECT p.ciudad, COUNT(s) " +
+           "FROM Servicio s JOIN s.puntos p " +
+           "WHERE p.ciudad = :ciudad AND s.fecha BETWEEN :inicio AND :fin " +
+           "GROUP BY p.ciudad")
+    List<Object[]> utilizacionPorCiudad(String ciudad, Date inicio, Date fin);
 
     @Query(value = "SELECT * FROM SERVICIO", nativeQuery = true)
     Collection<Servicio> darServicios();
@@ -29,9 +38,11 @@ public interface ServicioRepository extends JpaRepository<Servicio, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO SERVICIO (TIPOSERVICIO, FECHA, COSTO, IDUSUARIOSERVICIO, IDUSUARIOCONDUCTOR, IDVEHICULO) " +
-                   "VALUES (:tipo, :fecha, :costo, :idUsuarioServicio, :idConductor, :idVehiculo)", nativeQuery = true)
-    void insertarServicio(@Param("tipo") String tipo,
+    @Query(value = "INSERT INTO SERVICIO (IDSERVICIO, DISTANCIAKM, IDTARIFA, TIPO, FECHA, COSTO, IDUSUARIOSERVICIO, IDUSUARIOCONDUCTOR, IDVEHICULO) " +
+                   "VALUES (alpescab_sequence.nextval,:distanciakm, :idtarifa, :tipo, :fecha, :costo, :idUsuarioServicio, :idConductor, :idVehiculo)", nativeQuery = true)
+    void insertarServicio(@Param("distanciakm") Double distanciaKm,
+                          @Param("idtarifa") Long idTarifa,
+                            @Param("tipo") String tipo,
                           @Param("fecha") String fecha,
                           @Param("costo") double costo,
                           @Param("idUsuarioServicio") Long idUsuarioServicio,

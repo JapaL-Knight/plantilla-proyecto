@@ -95,6 +95,7 @@ CREATE TABLE Punto (
     latitud DECIMAL(12,6) NOT NULL,
     direccion VARCHAR(200) NOT NULL,
     idCiudad INT NOT NULL,
+    orden INT NOT NULL,
     CONSTRAINT fk_punto_servicio FOREIGN KEY (idServicio) REFERENCES Servicio(idServicio),
     CONSTRAINT fk_punto_ciudad FOREIGN KEY (idCiudad) REFERENCES Ciudad(idCiudad)
 );
@@ -105,6 +106,7 @@ CREATE TABLE Revision (
     idServicio INT NOT NULL,
     calificacion DECIMAL(2,1) CHECK (calificacion >= 0 AND calificacion <= 5),
     comentario VARCHAR(200) NOT NULL,
+    idusuariorevisado INT NOT NULL,
     CONSTRAINT fk_revision_servicio FOREIGN KEY (idServicio) REFERENCES Servicio(idServicio)
 );
 
