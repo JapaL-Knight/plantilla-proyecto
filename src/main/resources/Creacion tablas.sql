@@ -138,5 +138,20 @@ CREATE SEQUENCE ALPESCAB_SEQUENCE
     NOCACHE
     NOCYCLE;
 
+-- Secuencia para Usuario (máximo ID en poblacion = 300)
+CREATE SEQUENCE USUARIO_SEQ
+    START WITH 301
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+-- Secuencia para Viaje (máximo ID en poblacion = 576)
+CREATE SEQUENCE VIAJE_SEQ
+    START WITH 577
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
 
 SELECT sequence_name FROM user_sequences WHERE sequence_name = 'ALPESCAB_SEQUENCE';
+SELECT sequence_name FROM user_sequences WHERE sequence_name = 'USUARIO_SEQ';
+SELECT sequence_name FROM user_sequences WHERE sequence_name = 'VIAJE_SEQ';
