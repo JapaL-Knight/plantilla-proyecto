@@ -18,21 +18,24 @@ public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
     @Query(value = "SELECT * FROM CIUDAD", nativeQuery = true)
     Collection<Ciudad> darCiudades();
 
-    @Query(value = "SELECT * FROM CIUDAD WHERE idCiudad = :id", nativeQuery = true)
-    Ciudad darCiudad(@Param("id") long id);
+    @Query(value = "SELECT * FROM CIUDAD WHERE id = :id", nativeQuery = true)
+    Ciudad darCiudad(@Param("id") Integer id);
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO CIUDAD (idCiudad, nombre) VALUES (alpescab_sequence.nextval, :nombre)", nativeQuery = true)
+    @Query(value = "INSERT INTO CIUDAD (id, nombre) VALUES (ALPESCAB_SEQUENCE.nextval, :nombre)", nativeQuery = true)
     void insertarCiudad(@Param("nombre") String nombre);
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM CIUDAD WHERE idCiudad = :id", nativeQuery = true)
-    void eliminarCiudad(@Param("id") long id);
+    @Query(value = "DELETE FROM CIUDAD WHERE id = :id", nativeQuery = true)
+    void eliminarCiudad(@Param("id") Integer id);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE CIUDAD SET nombre = :nombre WHERE idCiudad = :id", nativeQuery = true)
-    void actualizarCiudad(@Param("id") long id, @Param("nombre") String nombre);
+    @Query(value = "UPDATE CIUDAD SET nombre = :nombre WHERE id = :id", nativeQuery = true)
+    void actualizarCiudad(@Param("id") Integer   id, @Param("nombre") String nombre);
+
+    @Query(value = "SELECT * FROM CIUDAD WHERE id = (SELECT MAX(id) FROM CIUDAD)", nativeQuery = true)
+    Ciudad darUltimaCiudadCreada();
 }

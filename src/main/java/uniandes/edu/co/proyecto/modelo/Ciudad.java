@@ -1,11 +1,9 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,17 +11,14 @@ import jakarta.persistence.Table;
 public class Ciudad {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ciudad_seq")
-    @SequenceGenerator(name = "ciudad_seq", sequenceName = "ALPESCAB_SEQUENCE", allocationSize = 1)
-    @Column(name = "IDCIUDAD")
-    private Long idCiudad;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
 
-    @Column(name = "NOMBRE")
     private String nombre;
 
 
-    public Long getIdCiudad() { return idCiudad; }
-    public void setIdCiudad(Long idCiudad) { this.idCiudad = idCiudad; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }

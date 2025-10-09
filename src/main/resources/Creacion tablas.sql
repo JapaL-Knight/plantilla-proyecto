@@ -17,7 +17,7 @@ CREATE TABLE Usuario_Conductor (
 
 -- 3) CIUDAD
 CREATE TABLE Ciudad (
-    idCiudad INT PRIMARY KEY,
+    id NUMBER PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL
 );
 
@@ -137,5 +137,6 @@ CREATE SEQUENCE ALPESCAB_SEQUENCE
     INCREMENT BY 1
     NOCACHE
     NOCYCLE;
+
 
 SELECT sequence_name FROM user_sequences WHERE sequence_name = 'ALPESCAB_SEQUENCE';
