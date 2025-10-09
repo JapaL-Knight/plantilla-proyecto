@@ -1,4 +1,5 @@
 --RFC 1
+
 SELECT s.*, 
        v.placa,
        v.marca, 
@@ -17,7 +18,9 @@ INNER JOIN Usuario_Servicio us ON s.idUsuarioServicio = us.idUsuarioServicio
 INNER JOIN Usuario_Conductor uc ON s.idUsuarioConductor = uc.idUsuarioConductor
 INNER JOIN Usuario u ON uc.idUsuario = u.idUsuario
 INNER JOIN Vehiculo v ON s.idVehiculo = v.idVehiculo
-WHERE us.idUsuario = :idUsuario;
+WHERE us.idUsuario = 3;
+
+
 
 --RFC 2
 SELECT uc.idUsuarioConductor, 
@@ -61,7 +64,7 @@ FROM Servicio s
 INNER JOIN Vehiculo v ON s.idVehiculo = v.idVehiculo
 INNER JOIN Ciudad c ON v.idCiudadExpedicion = c.idCiudad
 INNER JOIN Tarifa t ON s.idTarifa = t.idTarifa
-WHERE c.idCiudad = :idCiudad
+WHERE c.idCiudad = 1
   AND s.fechaInicio BETWEEN TO_DATE(:fechaInicio, 'YYYY-MM-DD') AND TO_DATE(:fechaFin, 'YYYY-MM-DD')
 GROUP BY c.nombre, t.tipoServicio, t.nivel
 ORDER BY cantidad_servicios DESC;
